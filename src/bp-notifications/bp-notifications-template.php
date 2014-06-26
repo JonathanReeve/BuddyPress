@@ -831,6 +831,33 @@ function bp_the_notification_delete_link() {
 	}
 
 /**
+ * Output the checkbox for the current notification. 
+ *
+ * @since BuddyPress (2.0)
+ *
+ * @uses bp_get_the_notification_checkbox()
+ */ 
+function bp_the_notification_checkbox() { 
+	echo bp_get_the_notification_checkbox(); 
+} 
+	/**
+	 * Return the checkbox for the current notification. 
+	 *
+	 * @since BuddyPress (2.0)
+	 */ 
+	function bp_get_the_notification_checkbox() { 
+
+		// Start the output buffer
+		ob_start(); ?>
+
+		<input type="checkbox" name="notification_ids[]" value="<?php bp_the_notification_id(); ?>" />
+		
+		<?php $retval = ob_get_clean();
+
+		return apply_filters( 'bp_get_the_notification_checkbox', $retval );
+	} 
+	
+/**
  * Output the action links for the current notification.
  *
  * @since BuddyPress (1.9.0)
@@ -861,7 +888,8 @@ function bp_the_notification_action_links( $args = '' ) {
 			'sep'    => ' | ',
 			'links'  => array(
 				bp_get_the_notification_mark_link(),
-				bp_get_the_notification_delete_link()
+				bp_get_the_notification_delete_link(), 
+				bp_get_the_notification_checkbox()
 			)
 		) );
 
@@ -948,6 +976,32 @@ function bp_notifications_sort_order_form() {
 			<input id="submit" type="submit" name="form-submit" class="submit" value="<?php esc_attr_e( 'Go', 'buddypress' ); ?>" />
 		</noscript>
 	</form>
+
+<?php
+}
+
+/** 
+ * Output the markup for the notifications options nav area. 
+ * Allows users to select all notifications and do bulk actions on them, 
+ * like delete them or mark them as read. 
+ *
+ * @since Buddypress (2.0) 
+ */ 
+function bp_notifications_options() { 
+?> 
+
+	<?php _e( 'Select:', 'buddypress' ) ?> 
+
+
+	<select name="notification-type-select" id="notification-type-select">
+		<option value=""></option>
+		<option value="all"><?php _e('All', 'buddypress') ?></option>
+	</select> &nbsp;
+
+	<a href="#" id="notification_mark_as_read"><?php _e('Mark as Read', 'buddypress') ?></a> &nbsp;
+	<a href="#" id="notification_mark_as_unread"><?php _e('Mark as Unread', 'buddypress') ?></a> &nbsp;
+
+	<a href="#" id="delete_<?php echo bp_current_action(); ?>_messages"><?php _e( 'Delete Selected', 'buddypress' ); ?></a> &nbsp;
 
 <?php
 }

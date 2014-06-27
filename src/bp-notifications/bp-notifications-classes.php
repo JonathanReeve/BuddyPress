@@ -903,6 +903,7 @@ class BP_Notifications_Notification {
 		);
 
 		// WHERE clauses
+		w
 		$where_args = array(
 			'item_id' => $item_id,
 		);
